@@ -1,0 +1,32 @@
+class GameEventsConfig extends Object
+    config;
+
+var() globalconfig bool     bEnabled;
+var() globalconfig string   Host;
+var() globalconfig int      Port;
+var() globalconfig string   Path;
+var() globalconfig string   PasswordHeaderName;
+var() globalconfig string   Password;
+var() globalconfig bool     Debug;
+var() globalconfig int      WaitingPlayersIntervalInSecs;
+var() globalconfig int      WaitingPlayersIntervalInSecsExpired;
+var() globalconfig int      MatchStartedIntervalInSecs;
+var() globalconfig string 	TeamInfoJson;
+var() globalconfig string 	PlayerInfoJson;
+var() globalconfig int      SuppressMatchUpdatesLastSeconds;
+
+DefaultProperties {
+	bEnabled=true
+	Host="localhost"
+	Port=7790
+	Path=""
+	PasswordHeaderName="Authorization"
+	Password=""
+	Debug=false
+	WaitingPlayersIntervalInSecs=60
+	WaitingPlayersIntervalInSecsExpired=600
+	MatchStartedIntervalInSecs=60
+	SuppressMatchUpdatesLastSeconds=10
+	TeamInfoJson="%Index%,%Name%,%Score%"
+    PlayerInfoJson="%Id%,%Index%,%Name%,%Score%,%Ready%,%Password%,%Team%,%DieCount%,%KillCount%,%Spree%"
+}
