@@ -76,7 +76,8 @@ function string ConvertToJson(String teamInfoJson, String playerInfoJson) {
         playerStr = helper.static.Replace(playerStr, "%Id%", helper.static.CreateJsonPairAsInt("Id", playerInfo.Id));
         playerStr = helper.static.Replace(playerStr, "%Index%", helper.static.CreateJsonPairAsInt("Index", playerInfo.Index));
         playerStr = helper.static.Replace(playerStr, "%Name%", helper.static.CreateJsonPairAsStringWithEscape("Name", playerInfo.Name));
-        playerStr = helper.static.Replace(playerStr, "%Password%", helper.static.CreateJsonPairAsString("Password", playerInfo.Password));
+		// fix new line in password
+		playerStr = helper.static.Replace(playerStr, "%Password%", helper.static.CreateJsonPairAsStringWithEscape("Password", playerInfo.Password));
         playerStr = helper.static.Replace(playerStr, "%Team%", helper.static.CreateJsonPairAsInt("Team", playerInfo.Team));
         playerStr = helper.static.Replace(playerStr, "%Ready%", helper.static.CreateJsonPairAsBool("Ready", playerInfo.Ready));
         playerStr = helper.static.Replace(playerStr, "%Score%", helper.static.CreateJsonPairAsInt("Score", playerInfo.Score));
@@ -148,8 +149,11 @@ static function GameEventArgs Create(LevelInfo Level, Name stateName, int instig
         }
     }
 
+    arg.NumPlayers = i; // Make sure NumPlayers is set to the correct number of players
+
     teamGame = TeamGamePlus(Level.Game);
     arg.MaxTeams = teamGame.MaxTeams;
+
     for (i = 0; i < arg.MaxTeams; i++) {
         teamInfo = new class'GameEventsTeamInfo'();
         teamInfo.Name = teamGame.Teams[i].TeamName;

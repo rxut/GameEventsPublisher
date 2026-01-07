@@ -12,17 +12,22 @@ static function string CreateJsonPairAsString(string key, string value) {
     return "\""$key$"\":"@WrapIntoJsonString(value);
 }
 
+// fix new line escape -rX
 static function string CreateJsonPairAsStringWithEscape(string key, string value) {
-	local string escapedValue;
-	escapedValue = Replace(value, "\\", "\\b"); // Escapes backslashes.
-	escapedValue = Replace(value, "\"", "\\\""); // Escapes double quotes.
-	escapedValue = Replace(value, "\n", "\\n"); // Escapes newlines.
-	escapedValue = Replace(value, "\r", "\\r"); // Escapes carriage returns.
-	escapedValue = Replace(value, "\t", "\\t"); // Escapes tabs.
-	escapedValue = Replace(value, "\b", "\\b"); // Escapes backspaces.
-	escapedValue = Replace(value, "\f", "\\f"); // Escapes form feeds.
+    local string escapedValue;
+    
+    // Start with the original value
+    escapedValue = value;
+    
+    // Chain replacements on 'escapedValue', not 'value'
+    escapedValue = Replace(escapedValue, "\\", "\\\\"); // Backslashes first!
+    escapedValue = Replace(escapedValue, "\"", "\\\""); 
+    escapedValue = Replace(escapedValue, Chr(10), "");   // Strip LF
+    escapedValue = Replace(escapedValue, Chr(13), "");   // Strip CR
+    escapedValue = Replace(escapedValue, Chr(9), " ");   // Tab to space
 
-    return "\""$key$"\":"@WrapIntoJsonString(escapedValue);
+    // Don't use WrapIntoJsonString here as we manually escaped everything
+    return "\"" $ key $ "\": \"" $ escapedValue $ "\"";
 }
 
 static function string WrapIntoJsonString(string value) {
